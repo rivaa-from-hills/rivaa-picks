@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Rivaa's Picks – Admin</title>
+<style>
+  :root {
+    --bg: #fbf4ec; --card: #ffffff; --ink: #3a2a22; --muted: #7d6a5e;
+    --accent: #b5543a; --accent-ink: #ffffff; --line: #ecdcca;
+    --ok: #2f7a4b; --bad: #b3261e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1d1512; --card: #2a1f1a; --ink: #f5e9de; --muted: #bda999;
+      --accent: #e48a6c; --accent-ink: #2a1510; --line: #43322a;
+      --ok: #7bd39a; --bad: #ff8a80;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.45;
+  }
+  main { max-width: 520px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font: 700 22px Georgia, serif; margin: 0 0 4px; }
+  h2 { font-size: 16px; margin: 0 0 12px; }
+  .sub { color: var(--muted); margin: 0 0 18px; font-size: 14px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+  label { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px; }
+  label:first-of-type { margin-top: 0; }
+  .hint { color: var(--muted); font-size: 12px; font-weight: 400; margin-left: 4px; }
+  input[type=text], input[type=url], input[type=number], input[type=password], select {
+    width: 100%; font: inherit; font-size: 16px; color: var(--ink);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px;
+  }
+  input:focus, select:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .row { display: flex; gap: 10px; }
+  .row > * { flex: 1; min-width: 0; }
+  .row > .narrow { flex: 0 0 90px; }
+  button {
+    font: inherit; font-weight: 650; cursor: pointer; border-radius: 12px; border: 1px solid var(--line);
+    background: var(--card); color: var(--ink); padding: 10px 14px; min-height: 44px;
+  }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); width: 100%; font-size: 17px; min-height: 52px; margin-top: 18px; }
+  button:disabled { opacity: .55; cursor: wait; }
+  button.small { min-height: 36px; padding: 6px 12px; font-size: 13px; }
+  button.link { border: none; background: none; color: var(--muted); text-decoration: underline; font-weight: 500; min-height: 0; padding: 4px; }
+  #photoBtn { width: 100%; min-height: 56px; border-style: dashed; }
+  #preview { display: none; width: 110px; aspect-ratio: 9/16; object-fit: cover; border-radius: 10px; margin-top: 10px; border: 1px solid var(--line); }
+  #status { margin-top: 14px; font-size: 14px; min-height: 20px; }
+  #status.ok { color: var(--ok); } #status.bad { color: var(--bad); }
+  #status a { color: inherit; }
+  ol.steps { margin: 0 0 12px; padding-left: 20px; font-size: 14px; color: var(--muted); }
+  ol.steps li { margin-bottom: 4px; }
+  a { color: var(--accent); }
+  .item { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .item:first-child { border-top: none; }
+  .item img { width: 44px; aspect-ratio: 9/16; object-fit: cover; border-radius: 6px; background: var(--line); }
+  .item .t { font-weight: 650; font-size: 15px; overflow-wrap: anywhere; }
+  .item .m { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+  .item .btns { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .item input { margin-top: 8px; font-size: 14px; padding: 8px 10px; }
+  .hidden { display: none !important; }
+  .top { display: flex; justify-content: space-between; align-items: baseline; }
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <h1>Rivaa's Picks – Admin</h1>
+    <button class="link hidden" id="signOut" type="button">Sign out</button>
+  </div>
+  <p class="sub">Add a photo and an Amazon link. It goes live on your page by itself.</p>
+
+  <!-- LOCK SCREEN -->
+  <section class="card hidden" id="lock">
+    <h2>Sign in</h2>
+    <label for="lu">Username</label>
+    <input type="text" id="lu" autocapitalize="off" autocomplete="username" spellcheck="false">
+    <label for="lp">Password</label>
+    <input type="password" id="lp" autocomplete="current-password">
+    <button class="primary" id="unlock" type="button" style="margin-top:14px">Sign in</button>
+    <div id="lockStatus" class="hint" style="margin-top:10px"></div>
+    <button class="link" id="forget" type="button">Forget this device</button>
+  </section>
+
+  <!-- ONE-TIME SETUP -->
+  <section class="card hidden" id="setup">
+    <h2>One-time setup</h2>
+    <ol class="steps">
+      <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub token page</a>.</li>
+      <li>Name it "Rivaa admin". Repository access: <b>Only select repositories</b> and pick your picks repo.</li>
+      <li>Permissions &rarr; Repository permissions &rarr; <b>Contents: Read and write</b>.</li>
+      <li>Generate the token and paste it below.</li>
+    </ol>
+    <label for="repo">Your repository <span class="hint">username/repo-name</span></label>
+    <input type="text" id="repo" placeholder="rivaa-from-hills/rivaa-picks" value="rivaa-from-hills/rivaa-picks" autocapitalize="off" autocomplete="off" spellcheck="false">
+    <label for="token">Token</label>
+    <input type="password" id="token" placeholder="github_pat_…" autocomplete="off">
+    <label for="su">Choose a username</label>
+    <input type="text" id="su" autocapitalize="off" autocomplete="username" spellcheck="false">
+    <label for="sp">Choose a password <span class="hint">at least 8 characters</span></label>
+    <input type="password" id="sp" autocomplete="new-password">
+    <p class="hint">The token is stored in this browser only, encrypted with your username and password. Nobody can use this page without them.</p>
+    <button class="primary" id="saveSetup" type="button">Save and connect</button>
+    <div id="setupStatus" class="hint" style="margin-top:10px"></div>
+  </section>
+
+  <!-- ADD A PRODUCT -->
+  <section class="card hidden" id="add">
+    <h2>Add a product</h2>
+
+    <label>Photo</label>
+    <input type="file" id="photo" accept="image/*" class="hidden">
+    <button type="button" id="photoBtn">📷 Choose photo</button>
+    <img id="preview" alt="Photo preview">
+
+    <label for="link">Amazon link <span class="hint">the amzn.to link from SiteStripe</span></label>
+    <input type="url" id="link" placeholder="https://amzn.to/…" inputmode="url" autocapitalize="off" autocomplete="off">
+
+    <label for="cat">Category</label>
+    <select id="cat"></select>
+    <input type="text" id="newCat" class="hidden" placeholder="New category, e.g. Co-ord" style="margin-top:8px">
+
+    <label for="title">Name <span class="hint">short, e.g. Green cotton kurta</span></label>
+    <input type="text" id="title" maxlength="60" autocomplete="off">
+
+    <div class="row">
+      <div>
+        <label for="note">One short line <span class="hint">optional</span></label>
+        <input type="text" id="note" maxlength="70" autocomplete="off">
+      </div>
+      <div class="narrow">
+        <label for="look">Look #</label>
+        <input type="number" id="look" min="1" inputmode="numeric">
+      </div>
+    </div>
+
+    <button class="primary" id="publish" type="button">Publish</button>
+    <div id="status" role="status" aria-live="polite"></div>
+  </section>
+
+  <!-- CURRENT PRODUCTS -->
+  <section class="card hidden" id="manage">
+    <h2>On your page now</h2>
+    <div id="items"></div>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var KEY = "rivaa_admin_v2";
+  var PRESETS = ["Kurti", "Jeans", "Lower", "Dress", "Top", "Co-ord", "Saree", "Other"];
+  var cfg = null;       // { repo: "user/name", token: "...", branch: "main" }
+  var products = [];    // current products (from GitHub, not from cache)
+  var busy = false;
+  var photoB64 = null;  // resized JPEG, base64, ready to upload
+
+  var enc = new TextEncoder(), dec = new TextDecoder();
+  function b64(buf) { var a = new Uint8Array(buf), s = ""; for (var i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s); }
+  function unb64(t) { var s = atob(t), a = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return a; }
+  function deriveKey(user, pass, salt) {
+    return crypto.subtle.importKey("raw", enc.encode(user.trim().toLowerCase() + "\n" + pass), "PBKDF2", false, ["deriveKey"]).then(function (km) {
+      return crypto.subtle.deriveKey({ name: "PBKDF2", salt: salt, iterations: 600000, hash: "SHA-256" }, km,
+        { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+    });
+  }
+  function loadVault() { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; } }
+  function saveVault(user, pass, c) {
+    var salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+    return deriveKey(user, pass, salt).then(function (k) {
+      return crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, k, enc.encode(JSON.stringify(c)));
+    }).then(function (ct) {
+      localStorage.setItem(KEY, JSON.stringify({ v: 2, salt: b64(salt), iv: b64(iv), ct: b64(ct) }));
+    });
+  }
+  function openVault(user, pass, v) {
+    return deriveKey(user, pass, unb64(v.salt)).then(function (k) {
+      return crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(v.iv) }, k, unb64(v.ct));
+    }).then(function (pt) { return JSON.parse(dec.decode(pt)); });
+  }
+  function clearCfg() { try { localStorage.removeItem(KEY); } catch (e) {} }
+
+  /* ---------- GitHub API ---------- */
+  function friendly(status, where) {
+    if (status === 401) return "GitHub did not accept the token. It may be wrong or expired. Sign out and paste a new one.";
+    if (status === 403) return "The token is not allowed to do that. Check it has Contents: Read and write for this repository.";
+    if (status === 404) return "Could not find that repository with this token. Check the name and that the token includes this repository.";
+    if (status === 409 || status === 422) return "Someone changed the page at the same moment. Please tap Publish again.";
+    return "GitHub said no (" + status + ")" + (where ? " while " + where : "") + ". Please try again.";
+  }
+
+  function gh(method, path, body) {
+    var headers = {
+      "Accept": "application/vnd.github+json",
+      "Authorization": "Bearer " + cfg.token,
+      "X-GitHub-Api-Version": "2022-11-28"
+    };
+    if (body) headers["Content-Type"] = "application/json";
+    return fetch("https://api.github.com" + path, {
+      method: method, headers: headers, body: body ? JSON.stringify(body) : undefined, cache: "no-store"
+    }).then(function (r) {
+      return r.text().then(function (t) {
+        var j = null; try { j = t ? JSON.parse(t) : null; } catch (e) {}
+        return { status: r.status, ok: r.ok, json: j };
+      });
+    }, function () {
+      var err = new Error("No connection to GitHub. Check your internet and try again.");
+      err.handled = true; throw err;
+    });
+  }
+
+  function fail(res, where) { var e = new Error(friendly(res.status, where)); e.status = res.status; e.handled = true; return e; }
+
+  function b64ToText(b64) {
+    var bin = atob(b64.replace(/\s/g, ""));
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+  function textToB64(text) {
+    var bytes = new TextEncoder().encode(text), s = "";
+    for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return btoa(s);
+  }
+
+  function contentsPath(file) { return "/repos/" + cfg.repo + "/contents/" + file.split("/").map(encodeURIComponent).join("/"); }
+
+  function readProducts() {
+    return gh("GET", contentsPath("products.json") + "?ref=" + encodeURIComponent(cfg.branch)).then(function (res) {
+      if (res.status === 404) {
+        // Only treat as "file missing" if the repo itself is reachable
+        return gh("GET", "/repos/" + cfg.repo).then(function (r2) {
+          if (!r2.ok) throw fail(r2, "opening the repository");
+          return { sha: null, data: { products: [] } };
+        });
+      }
+      if (!res.ok) throw fail(res, "reading your product list");
+      var data;
+      try { data = JSON.parse(b64ToText(res.json.content)); } catch (e) { data = { products: [] }; }
+      if (!data || !Array.isArray(data.products)) data = { products: [] };
+      return { sha: res.json.sha, data: data };
+    });
+  }
+
+  // read -> change -> write, retrying if GitHub says the file moved on
+  function updateProducts(mutate, message, attempt) {
+    attempt = attempt || 1;
+    return readProducts().then(function (cur) {
+      mutate(cur.data);
+      var body = { message: message, content: textToB64(JSON.stringify(cur.data, null, 2) + "\n"), branch: cfg.branch };
+      if (cur.sha) body.sha = cur.sha;
+      return gh("PUT", contentsPath("products.json"), body).then(function (res) {
+        if ((res.status === 409 || res.status === 422) && attempt < 3) return updateProducts(mutate, message, attempt + 1);
+        if (!res.ok) throw fail(res, "saving your product list");
+        products = cur.data.products;
+      });
+    });
+  }
+
+  function deleteImage(path) { // best effort, never blocks
+    return gh("GET", contentsPath(path) + "?ref=" + encodeURIComponent(cfg.branch)).then(function (r) {
+      if (!r.ok || !r.json || !r.json.sha) return;
+      return gh("DELETE", contentsPath(path), { message: "Remove photo " + path, sha: r.json.sha, branch: cfg.branch });
+    }).catch(function () {});
+  }
+
+  /* ---------- photo: resize in the browser so any phone photo works ---------- */
+  function loadBitmap(file) {
+    if (window.createImageBitmap) {
+      return createImageBitmap(file, { imageOrientation: "from-image" }).catch(function () { return viaImg(file); });
+    }
+    return viaImg(file);
+  }
+  function viaImg(file) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file), im = new Image();
+      im.onload = function () { resolve(im); };
+      im.onerror = function () { reject(new Error("bad image")); };
+      im.src = url;
+    });
+  }
+  function resizePhoto(file) {
+    return loadBitmap(file).then(function (bmp) {
+      var w = bmp.width, h = bmp.height, MAX = 1100;
+      var s = Math.min(1, MAX / Math.max(w, h));
+      var cw = Math.round(w * s), ch = Math.round(h * s);
+      var c = document.createElement("canvas"); c.width = cw; c.height = ch;
+      var ctx = c.getContext("2d");
+      ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, cw, ch);
+      ctx.drawImage(bmp, 0, 0, cw, ch);
+      return new Promise(function (resolve, reject) {
+        c.toBlob(function (blob) {
+          if (!blob) return reject(new Error("resize failed"));
+          var fr = new FileReader();
+          fr.onload = function () { resolve({ b64: String(fr.result).split(",")[1], url: URL.createObjectURL(blob), w: cw, h: ch }); };
+          fr.onerror = function () { reject(new Error("read failed")); };
+          fr.readAsDataURL(blob);
+        }, "image/jpeg", 0.82);
+      });
+    });
+  }
+
+  /* ---------- helpers ---------- */
+  function status(msg, kind) {
+    var s = $("status"); s.className = kind || ""; s.textContent = "";
+    if (typeof msg === "string") s.textContent = msg; else s.appendChild(msg);
+  }
+  function siteUrl() {
+    var p = cfg.repo.split("/");
+    return "https://" + p[0].toLowerCase() + ".github.io/" + (p[1].toLowerCase() === p[0].toLowerCase() + ".github.io" ? "" : p[1] + "/");
+  }
+  function isAmazon(u) {
+    try { var h = new URL(u).hostname.toLowerCase(); return /(^|\.)(amzn\.to|amzn\.in|amazon\.in)$/.test(h); }
+    catch (e) { return false; }
+  }
+  function setBusy(b) { busy = b; $("publish").disabled = b; $("photoBtn").disabled = b; }
+  function nextLook() { var m = 0; products.forEach(function (p) { if (p.look > m) m = p.look; }); return m + 1; }
+
+  function renderCats() {
+    var names = [];
+    products.forEach(function (p) { if (p.category && names.indexOf(p.category) < 0) names.push(p.category); });
+    PRESETS.forEach(function (c) { if (names.indexOf(c) < 0) names.push(c); });
+    var sel = $("cat"), keep = sel.value;
+    sel.innerHTML = "";
+    names.forEach(function (n) { var o = document.createElement("option"); o.value = n; o.textContent = n; sel.appendChild(o); });
+    var add = document.createElement("option"); add.value = "__new"; add.textContent = "+ New category…"; sel.appendChild(add);
+    if (keep && names.indexOf(keep) >= 0) sel.value = keep;
+    $("newCat").classList.toggle("hidden", sel.value !== "__new");
+  }
+
+  function renderItems() {
+    var box = $("items"); box.innerHTML = "";
+    $("manage").classList.toggle("hidden", !products.length);
+    products.forEach(function (p, idx) {
+      var row = document.createElement("div"); row.className = "item";
+      var img = document.createElement("img"); img.alt = ""; img.src = siteUrl() + p.image;
+      img.onerror = function () { img.style.visibility = "hidden"; };
+      var right = document.createElement("div");
+      var t = document.createElement("div"); t.className = "t"; t.textContent = p.title;
+      var m = document.createElement("div"); m.className = "m"; m.textContent = "Look " + p.look + " · " + p.category + " · " + (p.url || "no link");
+      var btns = document.createElement("div"); btns.className = "btns";
+      var edit = document.createElement("button"); edit.type = "button"; edit.className = "small"; edit.textContent = "Change link";
+      var del = document.createElement("button"); del.type = "button"; del.className = "small"; del.textContent = "Remove";
+      btns.appendChild(edit); btns.appendChild(del);
+      right.appendChild(t); right.appendChild(m); right.appendChild(btns);
+      row.appendChild(img); row.appendChild(right); box.appendChild(row);
+
+      edit.onclick = function () {
+        if (right.querySelector("input")) return;
+        var inp = document.createElement("input"); inp.type = "url"; inp.value = p.url || ""; inp.placeholder = "https://amzn.to/…";
+        var save = document.createElement("button"); save.type = "button"; save.className = "small"; save.textContent = "Save link";
+        right.insertBefore(inp, btns); btns.insertBefore(save, edit);
+        edit.textContent = "Cancel";
+        edit.onclick = function () { renderItems(); };
+        save.onclick = function () {
+          var v = inp.value.trim();
+          if (!isAmazon(v)) { status("That doesn't look like an Amazon link (amzn.to or amazon.in).", "bad"); return; }
+          if (busy) return; setBusy(true); status("Saving…");
+          updateProducts(function (d) {
+            var q = d.products.filter(function (x) { return x.image === p.image; })[0];
+            if (q) q.url = v;
+          }, "Update link for Look " + p.look).then(function () {
+            status("Link updated. Live in about a minute.", "ok");
+          }).catch(showErr).then(function () { setBusy(false); renderItems(); });
+        };
+      };
+
+      var armed = null;
+      del.onclick = function () {
+        if (busy) return;
+        if (!armed) {
+          del.textContent = "Tap again to remove";
+          armed = setTimeout(function () { armed = null; del.textContent = "Remove"; }, 4000);
+          return;
+        }
+        clearTimeout(armed); armed = null; setBusy(true); status("Removing…");
+        updateProducts(function (d) {
+          d.products = d.products.filter(function (x) { return x.image !== p.image; });
+        }, "Remove Look " + p.look + ": " + p.title).then(function () {
+          return deleteImage(p.image);
+        }).then(function () {
+          status("Removed. Gone from your page in about a minute.", "ok");
+        }).catch(showErr).then(function () { setBusy(false); renderCats(); renderItems(); $("look").value = nextLook(); });
+      };
+    });
+  }
+
+  function showErr(e) { status(e && e.handled ? e.message : "Something went wrong. Please try again.", "bad"); }
+
+  /* ---------- screens ---------- */
+  function show(which) {
+    $("setup").classList.toggle("hidden", which !== "setup");
+    $("lock").classList.toggle("hidden", which !== "lock");
+    $("add").classList.toggle("hidden", which !== "main");
+    $("signOut").classList.toggle("hidden", which !== "main");
+    if (which !== "main") $("manage").classList.add("hidden");
+  }
+
+  function enterMain() {
+    show("main"); status("Loading your page…");
+    return readProducts().then(function (cur) {
+      products = cur.data.products;
+      renderCats(); renderItems();
+      $("look").value = nextLook();
+      status("");
+    }).catch(function (e) {
+      showErr(e);
+      if (e && (e.status === 401 || e.status === 404)) { clearCfg(); cfg = null; show("setup"); $("setupStatus").textContent = e.message; }
+    });
+  }
+
+  function parseRepo(v) {
+    v = (v || "").trim().replace(/^https?:\/\/(www\.)?github\.com\//i, "").replace(/[\/\s]+$/, "").replace(/\.git$/i, "");
+    var p = v.split("/");
+    return (p.length >= 2 && p[0] && p[1]) ? p[0] + "/" + p[1] : null;
+  }
+
+  $("saveSetup").onclick = function () {
+    var repo = parseRepo($("repo").value), token = $("token").value.trim();
+    var ss = $("setupStatus");
+    var user = $("su").value.trim(), pass = $("sp").value;
+    if (!user) { ss.textContent = "Choose a username."; return; }
+    if (pass.length < 8) { ss.textContent = "The password needs at least 8 characters."; return; }
+    if (!window.crypto || !crypto.subtle) { ss.textContent = "This page must be opened over https."; return; }
+    if (!repo) { ss.textContent = "Write the repository like username/repo-name."; return; }
+    if (!token) { ss.textContent = "Paste the token first."; return; }
+    cfg = { repo: repo, token: token, branch: "main" };
+    ss.textContent = "Connecting…"; $("saveSetup").disabled = true;
+    gh("GET", "/repos/" + repo).then(function (res) {
+      if (!res.ok) throw fail(res, "connecting");
+      cfg.branch = res.json.default_branch || "main";
+      return saveVault(user, pass, cfg).then(function () { $("sp").value = ""; $("token").value = ""; ss.textContent = ""; return enterMain(); });
+    }).catch(function (e) { ss.textContent = e.handled ? e.message : "Could not connect. Please try again."; })
+      .then(function () { $("saveSetup").disabled = false; });
+  };
+
+  $("signOut").onclick = function () { cfg = null; products = []; $("items").textContent = ""; show("lock"); };
+  $("forget").onclick = function () {
+    if (!confirm("Forget this device? You will need to paste the GitHub token again.")) return;
+    clearCfg(); cfg = null; show("setup");
+  };
+  $("unlock").onclick = function () {
+    var v = loadVault(), ls = $("lockStatus");
+    if (!v) { show("setup"); return; }
+    ls.textContent = "Checking…"; $("unlock").disabled = true;
+    openVault($("lu").value, $("lp").value, v).then(function (c) {
+      cfg = c; $("lp").value = ""; ls.textContent = ""; return enterMain();
+    }, function () { ls.textContent = "Wrong username or password."; })
+      .then(function () { $("unlock").disabled = false; });
+  };
+  $("lp").onkeydown = function (e) { if (e.key === "Enter") $("unlock").onclick(); };
+
+  $("photoBtn").onclick = function () { $("photo").click(); };
+  $("photo").onchange = function () {
+    var f = this.files && this.files[0]; if (!f) return;
+    $("photoBtn").textContent = "Preparing photo…";
+    resizePhoto(f).then(function (r) {
+      photoB64 = r.b64;
+      $("preview").src = r.url; $("preview").style.display = "block";
+      $("photoBtn").textContent = "📷 Change photo";
+    }).catch(function () {
+      photoB64 = null; $("preview").style.display = "none";
+      $("photoBtn").textContent = "📷 Choose photo";
+      status("That photo could not be opened. Try a JPG or PNG.", "bad");
+    });
+  };
+  $("cat").onchange = function () { $("newCat").classList.toggle("hidden", this.value !== "__new"); };
+
+  $("publish").onclick = function () {
+    if (busy) return;
+    var link = $("link").value.trim();
+    var cat = $("cat").value === "__new" ? $("newCat").value.trim() : $("cat").value;
+    var title = $("title").value.trim(), note = $("note").value.trim();
+    var look = parseInt($("look").value, 10);
+    if (!photoB64) return status("Choose a photo first.", "bad");
+    if (!isAmazon(link)) return status("Paste the Amazon link (it starts with https://amzn.to/).", "bad");
+    if (!cat) return status("Pick or type a category.", "bad");
+    if (!title) return status("Give the product a short name.", "bad");
+    if (!(look > 0)) look = nextLook();
+
+    setBusy(true); status("Uploading photo…");
+    var imgPath = "images/look" + look + "-" + Date.now().toString(36) + ".jpg";
+    gh("PUT", contentsPath(imgPath), { message: "Add photo for Look " + look, content: photoB64, branch: cfg.branch })
+      .then(function (res) {
+        if (!res.ok) throw fail(res, "uploading the photo");
+        status("Saving…");
+        return updateProducts(function (d) {
+          d.products.unshift({ look: look, category: cat, title: title, note: note, image: imgPath, url: link });
+        }, "Add Look " + look + ": " + title);
+      })
+      .then(function () {
+        var span = document.createElement("span");
+        span.appendChild(document.createTextNode("Published! It will be live in 1–2 minutes. "));
+        var a = document.createElement("a"); a.href = siteUrl(); a.target = "_blank"; a.rel = "noopener"; a.textContent = "Open your page";
+        span.appendChild(a);
+        status(span, "ok");
+        photoB64 = null; $("preview").style.display = "none"; $("photoBtn").textContent = "📷 Choose photo"; $("photo").value = "";
+        $("link").value = ""; $("title").value = ""; $("note").value = ""; $("newCat").value = "";
+        renderCats(); renderItems(); $("look").value = nextLook();
+      })
+      .catch(showErr)
+      .then(function () { setBusy(false); });
+  };
+
+  /* ---------- start ---------- */
+  try { localStorage.removeItem("rivaa_admin_v1"); } catch (e) {}
+  show(loadVault() ? "lock" : "setup");
+})();
+</script>
+</body>
+</html>

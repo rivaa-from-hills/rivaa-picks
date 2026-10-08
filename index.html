@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rivaa's Picks</title>
+<meta name="description" content="Budget kurtis, jeans and more, styled by Rivaa. Rivaa is an AI fashion creator.">
+<style>
+  :root {
+    --bg: #fbf4ec;
+    --card: #ffffff;
+    --ink: #3a2a22;
+    --muted: #7d6a5e;
+    --accent: #b5543a;
+    --accent-ink: #ffffff;
+    --line: #ecdcca;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1d1512;
+      --card: #2a1f1a;
+      --ink: #f5e9de;
+      --muted: #bda999;
+      --accent: #e48a6c;
+      --accent-ink: #2a1510;
+      --line: #43322a;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.45;
+  }
+  .wrap {
+    max-width: 1200px; margin: 0 auto;
+    padding: 24px max(16px, env(safe-area-inset-right)) 40px max(16px, env(safe-area-inset-left));
+  }
+
+  header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .avatar {
+    flex: none; width: 56px; height: 56px; border-radius: 50%;
+    background: var(--accent); color: var(--accent-ink);
+    display: grid; place-items: center;
+    font: 700 24px Georgia, serif;
+  }
+  h1 { font: 700 24px Georgia, serif; margin: 0; }
+  .tag { color: var(--muted); margin: 2px 0 0; font-size: 14px; }
+  .ai {
+    display: inline-block; margin-top: 6px;
+    font-size: 11px; color: var(--muted);
+    border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px;
+  }
+
+  /* sidebar left, products right */
+  .layout { display: grid; grid-template-columns: 190px 1fr; gap: 24px; align-items: start; }
+  .layout > * { min-width: 0; }
+  .filters { position: sticky; top: 16px; }
+  .filters h2 {
+    font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 10px;
+  }
+  #chips { display: flex; flex-direction: column; gap: 6px; }
+  .chip {
+    display: flex; justify-content: space-between; align-items: center;
+    font: inherit; font-size: 15px; text-align: left;
+    background: var(--card); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 12px;
+    padding: 10px 12px; cursor: pointer;
+  }
+  .chip .n { color: var(--muted); font-size: 12px; }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .chip[aria-pressed="true"] .n { color: var(--accent-ink); opacity: .85; }
+  .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* product rows: image left, link right */
+  #list {
+    list-style: none; margin: 0; padding: 0; display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  }
+  .item {
+    display: grid; grid-template-columns: 132px 1fr; gap: 16px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 12px;
+  }
+  .thumb {
+    display: block; width: 132px; aspect-ratio: 9 / 16;
+    border-radius: 12px; overflow: hidden; background: var(--line);
+    text-decoration: none;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+  .ph {
+    width: 100%; height: 100%; display: grid; place-items: center;
+    color: #fff; font-weight: 700; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,.35);
+  }
+  .info { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  .badge { font-size: 12px; color: var(--muted); margin: 0 0 4px; }
+  .title { font-weight: 650; font-size: 17px; margin: 0; overflow-wrap: anywhere; }
+  .note { color: var(--muted); font-size: 14px; margin: 4px 0 0; }
+  .buy {
+    align-self: flex-start; margin-top: 12px;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 650; font-size: 14px; text-decoration: none;
+    border-radius: 999px; padding: 9px 16px;
+  }
+  .buy:hover, .buy:focus-visible { filter: brightness(1.08); }
+  .soon { align-self: flex-start; margin-top: 12px; color: var(--muted); font-size: 13px; }
+  .empty { grid-column: 1 / -1; color: var(--muted); padding: 24px 0; }
+
+  footer { margin-top: 32px; text-align: center; color: var(--muted); font-size: 12px; }
+  footer p { margin: 4px 0; }
+
+  /* phones: sidebar becomes a scrolling filter bar on top */
+  @media (max-width: 719px) {
+    .layout { grid-template-columns: 1fr; gap: 14px; }
+    .filters {
+      position: sticky; top: 0; z-index: 5;
+      background: var(--bg); margin: 0 -16px; padding: 8px 16px;
+    }
+    .filters h2 { display: none; }
+    #chips { flex-direction: row; overflow-x: auto; gap: 8px; padding-bottom: 2px; }
+    .chip { flex: none; border-radius: 999px; padding: 8px 14px; gap: 8px; min-height: 44px; }
+    .item { grid-template-columns: 112px 1fr; gap: 12px; }
+    .thumb { width: 112px; }
+    .title { font-size: 16px; }
+  }
+  @media (max-width: 400px) {
+    .item { grid-template-columns: 96px 1fr; padding: 10px; }
+    .thumb { width: 96px; }
+    .buy { padding: 9px 14px; font-size: 13px; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="avatar" aria-hidden="true">R</div>
+    <div>
+      <h1>Rivaa's Picks</h1>
+      <p class="tag">Budget finds, styled by Rivaa</p>
+      <span class="ai">AI-generated fashion character</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="filters" aria-label="Filter by category">
+      <h2>Browse</h2>
+      <div id="chips" role="group"></div>
+    </aside>
+    <ul id="list"><li class="empty">Loading picks…</li></ul>
+  </div>
+
+  <footer>
+    <p><strong>As an Amazon Associate I earn from qualifying purchases.</strong></p>
+    <p>All shop buttons are affiliate links. Price and availability can change on Amazon.</p>
+  </footer>
+</div>
+
+<script>
+  /* This page has no product list inside it.
+     Products come from products.json, which the admin page updates for you. */
+  var LOOKS = [];
+  var active = "All";
+  var chipsEl = document.getElementById("chips");
+  var listEl = document.getElementById("list");
+
+  function isLive(x) { return typeof x.url === "string" && x.url.indexOf("http") === 0; }
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  function categories() {
+    var seen = {}, out = [];
+    LOOKS.forEach(function (x) {
+      if (!(x.category in seen)) { seen[x.category] = 0; out.push(x.category); }
+      seen[x.category]++;
+    });
+    return { names: out, counts: seen };
+  }
+
+  function placeholder(x) {
+    var p = el("div", "ph", "Look " + x.look);
+    p.style.background = x.color || "#b5543a";
+    return p;
+  }
+
+  function thumb(x) {
+    var box = isLive(x) ? el("a", "thumb") : el("div", "thumb");
+    if (isLive(x)) {
+      box.href = x.url; box.target = "_blank"; box.rel = "sponsored noopener";
+      box.setAttribute("aria-label", "Shop " + x.title + " on Amazon");
+    }
+    if (x.image) {
+      var img = el("img");
+      img.src = x.image;
+      img.alt = x.title;
+      img.loading = "lazy";
+      img.onerror = function () { box.replaceChild(placeholder(x), img); };
+      box.appendChild(img);
+    } else {
+      box.appendChild(placeholder(x));
+    }
+    return box;
+  }
+
+  function renderChips() {
+    var c = categories();
+    chipsEl.innerHTML = "";
+    if (!LOOKS.length) return;
+    ["All"].concat(c.names).forEach(function (name) {
+      var count = name === "All" ? LOOKS.length : c.counts[name];
+      var b = el("button", "chip");
+      b.type = "button";
+      b.setAttribute("aria-pressed", String(name === active));
+      b.appendChild(el("span", "", name));
+      b.appendChild(el("span", "n", String(count)));
+      b.onclick = function () { active = name; renderChips(); renderList(); };
+      chipsEl.appendChild(b);
+    });
+  }
+
+  function renderList() {
+    listEl.innerHTML = "";
+    var shown = LOOKS.filter(function (x) { return active === "All" || x.category === active; });
+    if (!shown.length) { listEl.appendChild(el("li", "empty", "New picks coming soon.")); return; }
+    shown.forEach(function (x) {
+      var li = el("li", "item");
+      li.appendChild(thumb(x));
+      var info = el("div", "info");
+      info.appendChild(el("p", "badge", "Look " + x.look + " · " + x.category));
+      info.appendChild(el("h3", "title", x.title));
+      if (x.note) info.appendChild(el("p", "note", x.note));
+      if (isLive(x)) {
+        var a = el("a", "buy", "Shop on Amazon ›");
+        a.href = x.url; a.target = "_blank"; a.rel = "sponsored noopener";
+        info.appendChild(a);
+      } else {
+        info.appendChild(el("span", "soon", "Link coming soon"));
+      }
+      li.appendChild(info);
+      listEl.appendChild(li);
+    });
+  }
+
+  fetch("products.json", { cache: "no-cache" })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) {
+      LOOKS = (data && data.products) || [];
+      LOOKS.forEach(function (x) { if (!x.category) x.category = "More"; });
+      renderChips();
+      renderList();
+    })
+    .catch(function () {
+      listEl.innerHTML = "";
+      listEl.appendChild(el("li", "empty", "Couldn't load the picks. Please refresh the page."));
+    });
+</script>
+</body>
+</html>
