@@ -53,7 +53,7 @@ The token stays in that browser only. Don't use the admin page on a shared compu
 
 ## 4. Every day
 
-Open the admin page → choose the photo → paste the `amzn.to` link → pick the category → type a short name → **Publish**. It is live in about 1–2 minutes.
+Open the admin page → choose the photo → paste the affiliate link (e.g. `link.amazon/…` or `amzn.to/…`) → pick the category → type a short name → **Publish**. It is live in about 1–2 minutes.
 
 - Photos should be Rivaa's own styled pictures (portrait works best). They are shrunk automatically.
 - Don't copy photos from Amazon's website. Amazon doesn't allow its product photos to be reused this way.

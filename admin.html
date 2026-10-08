@@ -117,8 +117,8 @@
     <button type="button" id="photoBtn">📷 Choose photo</button>
     <img id="preview" alt="Photo preview">
 
-    <label for="link">Amazon link <span class="hint">the amzn.to link from SiteStripe</span></label>
-    <input type="url" id="link" placeholder="https://amzn.to/…" inputmode="url" autocapitalize="off" autocomplete="off">
+    <label for="link">Amazon link <span class="hint">the short link from SiteStripe</span></label>
+    <input type="url" id="link" placeholder="https://link.amazon/…" inputmode="url" autocapitalize="off" autocomplete="off">
 
     <label for="cat">Category</label>
     <select id="cat"></select>
@@ -314,10 +314,7 @@
     var p = cfg.repo.split("/");
     return "https://" + p[0].toLowerCase() + ".github.io/" + (p[1].toLowerCase() === p[0].toLowerCase() + ".github.io" ? "" : p[1] + "/");
   }
-  function isAmazon(u) {
-    try { var h = new URL(u).hostname.toLowerCase(); return /(^|\.)(amzn\.to|amzn\.in|amazon\.in)$/.test(h); }
-    catch (e) { return false; }
-  }
+  function isAmazon(u) { return /^https?:\/\/\S+$/i.test(u); }
   function setBusy(b) { busy = b; $("publish").disabled = b; $("photoBtn").disabled = b; }
   function nextLook() { var m = 0; products.forEach(function (p) { if (p.look > m) m = p.look; }); return m + 1; }
 
@@ -359,7 +356,7 @@
         edit.onclick = function () { renderItems(); };
         save.onclick = function () {
           var v = inp.value.trim();
-          if (!isAmazon(v)) { status("That doesn't look like an Amazon link (amzn.to or amazon.in).", "bad"); return; }
+          if (!isAmazon(v)) { status("Paste the full link, starting with https://.", "bad"); return; }
           if (busy) return; setBusy(true); status("Saving…");
           updateProducts(function (d) {
             var q = d.products.filter(function (x) { return x.image === p.image; })[0];
@@ -478,7 +475,7 @@
     var title = $("title").value.trim(), note = $("note").value.trim();
     var look = parseInt($("look").value, 10);
     if (!photoB64) return status("Choose a photo first.", "bad");
-    if (!isAmazon(link)) return status("Paste the Amazon link (it starts with https://amzn.to/).", "bad");
+    if (!isAmazon(link)) return status("Paste the affiliate link (it starts with https://).", "bad");
     if (!cat) return status("Pick or type a category.", "bad");
     if (!title) return status("Give the product a short name.", "bad");
     if (!(look > 0)) look = nextLook();
