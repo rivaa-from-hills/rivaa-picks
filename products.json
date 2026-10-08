@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 2,
+      "category": "Kurti",
+      "title": "Yellow farsi kurta",
+      "note": "",
+      "image": "images/look2-muzjhzcc.jpg",
+      "url": "https://link.amazon/B0d7cVNwd"
+    },
+    {
       "look": 1,
       "category": "Kurti",
       "title": "Blue farsi kurta",
