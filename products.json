@@ -1,3 +1,12 @@
 {
-  "products": []
+  "products": [
+    {
+      "look": 1,
+      "category": "Kurti",
+      "title": "Blue farsi kurta",
+      "note": "",
+      "image": "images/look1-muzj2bvv.jpg",
+      "url": "https://amzn.to/4AWd3Ii"
+    }
+  ]
 }
