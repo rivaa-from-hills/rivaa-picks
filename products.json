@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 5,
+      "category": "Kurti",
+      "title": "Purple Anarkali Suit",
+      "note": "",
+      "image": "images/look5-mv14g4em.jpg",
+      "url": "https://link.amazon/B07aeAVTR"
+    },
+    {
       "look": 4,
       "category": "Kurti",
       "title": "Green farsi kurta",
