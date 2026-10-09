@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 9,
+      "category": "Saree",
+      "title": "Beautiful pink saree",
+      "note": "",
+      "image": "images/look9-mv19no11.jpg",
+      "url": "https://link.amazon/B03exM5t4"
+    },
+    {
       "look": 8,
       "category": "Saree",
       "title": "Red silk saree",
