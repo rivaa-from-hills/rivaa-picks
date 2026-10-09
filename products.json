@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 6,
+      "category": "Saree",
+      "title": "Yellow embroidery saree",
+      "note": "",
+      "image": "images/look6-mv19ir9k.jpg",
+      "url": "https://link.amazon/B05MZK3pD"
+    },
+    {
       "look": 5,
       "category": "Kurti",
       "title": "Purple Anarkali Suit",
