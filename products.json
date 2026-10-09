@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 8,
+      "category": "Saree",
+      "title": "Red silk saree",
+      "note": "",
+      "image": "images/look8-mv19lvwx.jpg",
+      "url": "https://link.amazon/B01m2e5FE"
+    },
+    {
       "look": 7,
       "category": "Saree",
       "title": "Black sleveless blouse saree",
