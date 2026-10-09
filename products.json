@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 7,
+      "category": "Saree",
+      "title": "Black sleveless blouse saree",
+      "note": "",
+      "image": "images/look7-mv19kq9a.jpg",
+      "url": "https://link.amazon/B0fQI1N8f"
+    },
+    {
       "look": 6,
       "category": "Saree",
       "title": "Yellow embroidery saree",
