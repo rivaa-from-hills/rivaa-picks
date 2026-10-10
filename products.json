@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 10,
+      "category": "Anarkali",
+      "title": "Blue printed Anarkali Kurta Set",
+      "note": "",
+      "image": "images/look10-mv2epfbo.jpg",
+      "url": "https://link.amazon/B0bvVANWC"
+    },
+    {
       "look": 9,
       "category": "Saree",
       "title": "Beautiful pink saree",
