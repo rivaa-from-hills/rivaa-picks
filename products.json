@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 18,
+      "category": "Beauty",
+      "title": "Cetaphil Sun SPF 50 Sunscreen Light Gel",
+      "note": "",
+      "image": "images/look18-mv3p3xys.jpg",
+      "url": "https://link.amazon/B0dRkqezg"
+    },
+    {
       "look": 17,
       "category": "Beauty",
       "title": "Re' Equil Ultra Matte Dry Touch Sunscreen",
