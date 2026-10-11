@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 16,
+      "category": "Beauty",
+      "title": "Minimalist Light Fluid Sunscreen SPF 50 for Oily Skin",
+      "note": "",
+      "image": "images/look16-mv3oyp7l.jpg",
+      "url": "https://link.amazon/B0hiq8Tww"
+    },
+    {
       "look": 15,
       "category": "Beauty",
       "title": "Skinn by Titan, Raw Long Lasting EDP",
