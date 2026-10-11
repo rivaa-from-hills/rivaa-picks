@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 14,
+      "category": "Beauty",
+      "title": "Derma co sunscream",
+      "note": "",
+      "image": "images/look14-mv3nnl4r.jpg",
+      "url": "https://link.amazon/B03bshulF"
+    },
+    {
       "look": 13,
       "category": "Anarkali",
       "title": "Navy Blue Printed Anarkali Kurta Palazzo Set",
