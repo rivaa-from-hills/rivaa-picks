@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 23,
+      "category": "Beauty",
+      "title": "The Derma Co Oil-Free Daily Face Moisturizer With Hyaluronic",
+      "note": "",
+      "image": "images/look23-mv5hm46p.jpg",
+      "url": "https://link.amazon/B03VJsrBW"
+    },
+    {
       "look": 22,
       "category": "Beauty",
       "title": "Dot & Key Barrier Repair Moisturizer For Normal, Dry, Combin",
