@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 20,
+      "category": "Beauty",
+      "title": "Cetaphil Moisturising Lotion",
+      "note": "",
+      "image": "images/look20-mv5hifzf.jpg",
+      "url": "https://link.amazon/B01iBfDFz"
+    },
+    {
       "look": 19,
       "category": "Beauty",
       "title": "RE' EQUIL Ceramide & Hyaluronic Acid Moisturiser",
