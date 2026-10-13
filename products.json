@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 24,
+      "category": "Kurti",
+      "title": "Designer Party-Wear Kurti Top with Farshi Salwar",
+      "note": "",
+      "image": "images/look24-mv6yqow5.jpg",
+      "url": "https://link.amazon/B06CVIRsS"
+    },
+    {
       "look": 23,
       "category": "Beauty",
       "title": "The Derma Co Oil-Free Daily Face Moisturizer With Hyaluronic",
