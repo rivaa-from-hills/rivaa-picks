@@ -239,7 +239,7 @@
       info.appendChild(el("h3", "title", x.title));
       if (x.note) info.appendChild(el("p", "note", x.note));
       if (isLive(x)) {
-        var a = el("a", "buy", "Shop on Amazon ›");
+        var a = el("a", "buy", "Shop at Best Price ›");
         a.href = x.url; a.target = "_blank"; a.rel = "sponsored noopener";
         info.appendChild(a);
       } else {
