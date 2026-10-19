@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 42,
+      "category": "Beauty",
+      "title": "CeraVe Hydrating Cleanser",
+      "note": "",
+      "image": "images/look42-mvfj01nr.jpg",
+      "url": "https://link.amazon/B0igFKC14"
+    },
+    {
       "look": 41,
       "category": "Beauty",
       "title": "Cetaphil Gentle Skin Hydrating Face Wash",
