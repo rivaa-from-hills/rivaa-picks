@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 41,
+      "category": "Beauty",
+      "title": "Cetaphil Gentle Skin Hydrating Face Wash",
+      "note": "",
+      "image": "images/look41-mvfiz1cf.jpg",
+      "url": "https://link.amazon/B0b1OSoj2"
+    },
+    {
       "look": 40,
       "category": "Beauty",
       "title": "DOT & KEY Barrier Repair + Hydrating Gentle Face Wash With P",
