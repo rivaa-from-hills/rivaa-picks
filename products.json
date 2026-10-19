@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 39,
+      "category": "Beauty",
+      "title": "Minimalist Anti-Acne Salicylic Acid 2% Face Wash",
+      "note": "",
+      "image": "images/look39-mvfixith.jpg",
+      "url": "https://link.amazon/B058VfeBv"
+    },
+    {
       "look": 38,
       "category": "Beauty",
       "title": "The Derma Co 1% Kojic Acid Face Wash",
