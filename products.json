@@ -1,6 +1,14 @@
 {
   "products": [
     {
+      "look": 38,
+      "category": "Beauty",
+      "title": "The Derma Co 1% Kojic Acid Face Wash",
+      "note": "",
+      "image": "images/look38-mvfiwnc0.jpg",
+      "url": "https://link.amazon/B0aORvcHA"
+    },
+    {
       "look": 37,
       "category": "Kurti",
       "title": "Women's Pink Embroidered Anarkali Suit Set with Dupatta & Bo",
